@@ -22,7 +22,7 @@ jobs:
           sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
           sudo apt update
           sudo apt install -y docker-ce docker-ce-cli containerd.io
-          sudo docker run --rm --privileged -v /var/run/docker.sock:/var/run/docker.sock -w `pwd` mailchain/goreleaser-xcgo Goreleaser --release --rm-dist
+          sudo docker run --rm --privileged -v /var/run/docker.sock:/var/run/docker.sock -w `pwd` mailchain/goreleaser-xcgo --snapshot --rm-dist
           ls -hl
 
       - name: Upload binaries to release
