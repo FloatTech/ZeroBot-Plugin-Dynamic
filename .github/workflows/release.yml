@@ -9,11 +9,10 @@ jobs:
   goreleaser:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
         with:
           ref: master
-
       - name: Run GoReleaser
         run: |
           ls -hl
