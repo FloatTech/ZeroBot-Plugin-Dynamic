@@ -3,6 +3,8 @@ env:
 before:
   hooks:
     - go mod tidy
+    - sudo apt-get update
+    - sudo apt-get install -y gcc-multilib
 builds:
   - id: nowin
     env:
@@ -49,13 +51,10 @@ archives:
     builds:
       - nowin
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-    format_overrides:
-      - goos: windows
-        format: zip
 
 nfpms:
-  - license: AGPL 3.0
-    homepage: https://go-cqhttp.org
+  - license: GPL 3.0
+    homepage: https://github.com/FloatTech/ZeroBot-Plugin-Dynamic
     file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     formats:
       - deb
