@@ -16,7 +16,7 @@
 // Currently plugins are only supported on Linux, FreeBSD, and macOS.
 // Please report any issues.
 
-// +build windows,cgo
+// +build windows
 
 package plugin
 

@@ -16,7 +16,7 @@
 // Currently plugins are only supported on Linux, FreeBSD, and macOS.
 // Please report any issues.
 
-// +build linux,cgo darwin,cgo freebsd,cgo
+// +build linux darwin freebsd
 
 package plugin
 
