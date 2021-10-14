@@ -35,7 +35,7 @@ jobs:
       - name: Install cross C compiler
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential module-assistant gcc-multilib g++-multilib gcc-9-arm-linux-gnueabihf g++-9-arm-linux-gnueabihf gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
+          sudo apt-get install -y build-essential module-assistant gcc-9-arm-linux-gnueabihf g++-9-arm-linux-gnueabihf gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
 
       - name: Build linux-x64
         run: CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o artifacts/zbpd-linux-x64
