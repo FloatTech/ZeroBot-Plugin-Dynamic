@@ -40,9 +40,9 @@ jobs:
       - name: Build linux-x64
         run: CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o artifacts/zbpd-linux-x64
       - name: Build linux-x86
-        run: CGO_ENABLED=1 GOOS=linux GOARCH=386 CC=gcc-9-multilib-i686-linux-gnu CXX=g++-9-multilib-i686-linux-gnu go build -ldflags="-s -w" -o artifacts/zbpd-linux-x86
+        run: CGO_ENABLED=1 GOOS=linux GOARCH=386 CC=i686-linux-gnu-gcc-9 CXX=i686-linux-gnu-g++-9 go build -ldflags="-s -w" -o artifacts/zbpd-linux-x86
       - name: Build arm64
-        run: CGO_ENABLED=1 GOOS=linux GOARCH=arm64 GOARM=7 CC=gcc-9-aarch64-linux-gnu CXX=g++-9-aarch64-linux-gnu go build -ldflags="-s -w" -o artifacts/zbpd-linux-arm64
+        run: CGO_ENABLED=1 GOOS=linux GOARCH=arm64 GOARM=7 CC=aarch64-linux-gnu-gcc-9 CXX=aarch64-linux-gnu-g++-9 go build -ldflags="-s -w" -o artifacts/zbpd-linux-arm64
       - name: Build armv6
         run: CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 CC=arm-linux-gnueabihf-gcc-9 CXX=g++-9-arm-linux-gnueabihf go build -ldflags="-s -w" -o artifacts/zbpd-linux-armv6
 
