@@ -24,7 +24,7 @@ jobs:
           sudo apt install -y docker-ce docker-ce-cli containerd.io
           pwd
           ls -hl
-          sudo docker run --rm --privileged -v $PWD:`pwd` -v /var/run/docker.sock:/var/run/docker.sock -w `pwd` mailchain/goreleaser-xcgo --snapshot --rm-dist
+          sudo docker run --rm --privileged -v $PWD:`pwd` -v /var/run/docker.sock:/var/run/docker.sock -w `pwd` neilotoole/xcgo goreleaser release --rm-dist
           ls -hl
 
       - name: Upload binaries to release
