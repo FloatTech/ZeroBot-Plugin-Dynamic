@@ -14,13 +14,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: '1.17'
-
       - name: Run GoReleaser
-        run:
+        run: |
           sudo apt update
           sudo apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
