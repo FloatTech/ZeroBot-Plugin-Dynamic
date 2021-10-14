@@ -23,11 +23,8 @@ jobs:
           sudo apt update
           sudo apt install -y docker-ce docker-ce-cli containerd.io
           sudo systemctl status docker
-          sudo docker run --rm --privileged \
-            -v ($pwd) \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            -w ./ \
-            mailchain/goreleaser-xcgo Goreleaser --snapshot --rm-dist
+          sudo docker run --rm --privileged -v ($pwd) -v /var/run/docker.sock:/var/run/docker.sock -w ./ mailchain/goreleaser-xcgo Goreleaser --release --rm-dist
+          ls -hl
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
