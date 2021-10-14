@@ -9,13 +9,9 @@ jobs:
   goreleaser:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.4
-        with:
-          fetch-depth: 0
-
       - name: Run GoReleaser
         run: |
+          ls -hl
           sudo apt update
           sudo apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -30,7 +26,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ZeroBot-Plugin-Dynamic/dist/*
+          file: dist/*
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
