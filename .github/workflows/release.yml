@@ -15,7 +15,6 @@ jobs:
           ref: main
       - name: Run GoReleaser
         run: |
-          ls -hl
           sudo apt update
           sudo apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -23,8 +22,13 @@ jobs:
           sudo apt update
           sudo apt install -y docker-ce docker-ce-cli containerd.io
           pwd
+          git clone https://github.com/neilotoole/xcgo.git
+          cd xcgo
+          sudo docker build -t neilotoole/xcgo:v16 --rm=true .
+          sudo docker images
           ls -hl
-          sudo docker run -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} --rm --privileged -v $GITHUB_WORKSPACE:`pwd` -v /var/run/docker.sock:/var/run/docker.sock -w `pwd` neilotoole/xcgo:latest goreleaser --snapshot --rm-dist
+          cd ..
+          sudo docker run -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} --rm --privileged -v $GITHUB_WORKSPACE:`pwd` -v /var/run/docker.sock:/var/run/docker.sock -w `pwd` neilotoole/xcgo:v16 goreleaser --snapshot --rm-dist
           ls -hl
 
       - name: Upload binaries to release
