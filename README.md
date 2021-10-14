@@ -55,7 +55,7 @@ zerobot -h -t token -u url [-d|w] qq1 qq2 qq3 ...
 
 ### 使用稳定版/测试版 (推荐)
 
-可以前往[Release](https://github.com/FloatTech/ZeroBot-Plugin-Dynamic/releases)页面下载对应系统版本可执行文件，编译时开启了全部插件。
+可以前往[Release](https://github.com/FloatTech/ZeroBot-Plugin-Dynamic/releases)页面下载对应系统版本可执行文件，并将插件放到`plugins/`目录下。
 
 ### 编译运行
 
@@ -66,7 +66,7 @@ zerobot -h -t token -u url [-d|w] qq1 qq2 qq3 ...
 3. 编辑 main.go 文件，内容按需修改
 4. 前往 Release 页面发布一个 Release，`tag`形如`v1.2.3`，以触发稳定版编译流程
 5. 点击 Actions 按钮，等待编译完成，回到 Release 页面下载编译好的文件
-6. 运行 OneBot 框架，并同时运行本插件
+6. 运行 OneBot 框架，并同时运行本程序，并将插件放到`plugins/`目录下。
 7. 啾咪~
 
 #### 本地编译/交叉编译
@@ -84,14 +84,14 @@ go mod tidy
 ```
 
 3. 编辑 main.go 文件，内容按需修改
-4. 按照平台输入命令编译，下面举了两个不太常见的例子
+4. 按照平台输入命令编译
 
 ```bash
 # 本机平台
 go build -ldflags "-s -w" -o zerobot
 ```
 
-5. 运行 OneBot 框架，并同时运行本插件
+5. 运行 OneBot 框架，并同时运行本程序，并将插件放到`plugins/`目录下。
 
 ## 特别感谢
 
