@@ -35,16 +35,16 @@ jobs:
       - name: Install cross C compiler
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential module-assistant gcc-9-arm-linux-gnueabihf g++-9-arm-linux-gnueabihf gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
+          sudo apt-get install -y build-essential module-assistant gcc-9-multilib-i686-linux-gnu g++-9-multilib-i686-linux-gnu gcc-9-arm-linux-gnueabihf g++-9-arm-linux-gnueabihf gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
 
       - name: Build linux-x64
         run: CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o artifacts/zbpd-linux-x64
       - name: Build linux-x86
-        run: CGO_ENABLED=1 GOOS=linux GOARCH=386 go build -ldflags="-s -w" -o artifacts/zbpd-linux-x86
+        run: CGO_ENABLED=1 GOOS=linux GOARCH=386 CC=gcc-9-multilib-i686-linux-gnu CXX=g++-9-multilib-i686-linux-gnu go build -ldflags="-s -w" -o artifacts/zbpd-linux-x86
       - name: Build arm64
-        run: CGO_ENABLED=1 GOOS=linux GOARCH=arm64 GOARM=7 CC=gcc-8-aarch64-linux-gnu CXX=g++-8-aarch64-linux-gnu go build -ldflags="-s -w" -o artifacts/zbpd-linux-arm64
+        run: CGO_ENABLED=1 GOOS=linux GOARCH=arm64 GOARM=7 CC=gcc-9-aarch64-linux-gnu CXX=g++-9-aarch64-linux-gnu go build -ldflags="-s -w" -o artifacts/zbpd-linux-arm64
       - name: Build armv6
-        run: CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 CC=arm-linux-gnueabihf-gcc-8 CXX=g++-8-arm-linux-gnueabihf go build -ldflags="-s -w" -o artifacts/zbpd-linux-armv6
+        run: CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 CC=arm-linux-gnueabihf-gcc-9 CXX=g++-9-arm-linux-gnueabihf go build -ldflags="-s -w" -o artifacts/zbpd-linux-armv6
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
