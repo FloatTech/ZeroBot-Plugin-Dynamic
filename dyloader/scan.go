@@ -125,6 +125,8 @@ func open(path, target string) error {
 				sendGroupMessage, sendPrivateMessage, getMessage,
 				parse,
 				message.CustomNode, message.ParseMessage, message.ParseMessageFromArray)
+			logrus.Infoln("[dyloader]scan.open函数指针:", open)
+			logrus.Infoln("[dyloader]获得插件Inita指针:", p.Init)
 			p.Init()
 			pluginsMu.Lock()
 			plugins[target] = p

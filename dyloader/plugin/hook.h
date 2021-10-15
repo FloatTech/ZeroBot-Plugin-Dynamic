@@ -1,2 +1,2 @@
-void hook(void* ptrf, char* botconf, char* apicallers, char* hooknew, char* matlist, char* matlock, char* defen, char* reg, char* del, char* sndgrpmsg, char* sndprivmsg, char* getmsg, char* parsectx, char* custnode, char* pasemsg, char* parsemsgfromarr);
+void* hook(void* ptrf, char* botconf, char* apicallers, char* hooknew, char* matlist, char* matlock, char* defen, char* reg, char* del, char* sndgrpmsg, char* sndprivmsg, char* getmsg, char* parsectx, char* custnode, char* pasemsg, char* parsemsgfromarr);
 void init(void* ptrf);

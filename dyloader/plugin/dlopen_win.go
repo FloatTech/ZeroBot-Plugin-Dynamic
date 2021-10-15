@@ -11,25 +11,19 @@ import (
 	"unsafe"
 )
 
-func open(path string) (unsafe.Pointer, unsafe.Pointer, unsafe.Pointer, error) {
+func open(path string) (unsafe.Pointer, unsafe.Pointer, error) {
 	cPath := path + "\000"
 	var cErr *C.char
 	h := C.pluginOpen(cChar(&cPath), &cErr)
 	if h == 0 {
-		return nil, nil, nil, errors.New(C.GoString(cErr))
+		return nil, nil, errors.New(C.GoString(cErr))
 	}
 	cname := "Hook\000"
 	hook := C.pluginLookup(h, cChar(&cname), &cErr)
 	if hook == nil {
-		return *(*unsafe.Pointer)(unsafe.Pointer(&h)), nil, nil, errors.New(C.GoString(cErr))
+		return *(*unsafe.Pointer)(unsafe.Pointer(&h)), nil, errors.New(C.GoString(cErr))
 	}
-	cname2 := "Inita\000"
-	inita := C.pluginLookup(h, cChar(&cname2), &cErr)
-	if inita == nil {
-		fmt.Println(C.GoString(cErr))
-		return *(*unsafe.Pointer)(unsafe.Pointer(&h)), hook, nil, errors.New(C.GoString(cErr))
-	}
-	return *(*unsafe.Pointer)(unsafe.Pointer(&h)), hook, inita, nil
+	return *(*unsafe.Pointer)(unsafe.Pointer(&h)), hook, nil
 }
 
 func close(handle unsafe.Pointer) error {

@@ -12,14 +12,16 @@ type Plugin struct {
 	handle unsafe.Pointer
 	hook   unsafe.Pointer
 	inita  unsafe.Pointer
+	// Init 插件加载
+	Init func()
 }
 
 // Open opens a Go plugin.
 // If a path has already been opened, then the existing *Plugin is returned.
 // It is safe for concurrent use by multiple goroutines.
 func Open(path string) (*Plugin, error) {
-	handle, hook, inita, err := open(path)
-	return &Plugin{handle, hook, inita}, err
+	handle, hook, err := open(path)
+	return &Plugin{handle, hook, nil, nil}, err
 }
 
 // Close closes a Go plugin.
@@ -29,7 +31,7 @@ func Close(p *Plugin) error {
 	if p.handle != nil {
 		return close(p.handle)
 	}
-	return errors.New("plugin.Close: handle is nil.")
+	return errors.New("plugin.Close: handle is nil")
 }
 
 // Hook 改变本插件的环境变量以加载插件
@@ -40,12 +42,8 @@ func (p *Plugin) Hook(botconf interface{}, apicallers interface{}, hooknew inter
 	parsectx interface{},
 	custnode interface{}, pasemsg interface{}, parsemsgfromarr interface{},
 ) {
-	C.hook(p.hook, getdata(&botconf), getdata(&apicallers), getdata(&hooknew), getdata(&matlist), getdata(&matlock), getdata(&defen), getdata(&reg), getdata(&del), getdata(&sndgrpmsg), getdata(&sndprivmsg), getdata(&getmsg), getdata(&parsectx), getdata(&custnode), getdata(&pasemsg), getdata(&parsemsgfromarr))
-}
-
-// Init 插件加载
-func (p *Plugin) Init() {
-	C.init(p.inita)
+	p.inita = C.hook(p.hook, getdata(&botconf), getdata(&apicallers), getdata(&hooknew), getdata(&matlist), getdata(&matlock), getdata(&defen), getdata(&reg), getdata(&del), getdata(&sndgrpmsg), getdata(&sndprivmsg), getdata(&getmsg), getdata(&parsectx), getdata(&custnode), getdata(&pasemsg), getdata(&parsemsgfromarr))
+	p.Init = *(*func())(unsafe.Pointer(&p.inita))
 }
 
 func getdata(ptr *interface{}) *C.char {
