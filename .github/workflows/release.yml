@@ -37,7 +37,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential module-assistant gcc-9-multilib-i686-linux-gnu g++-9-multilib-i686-linux-gnu gcc-9-arm-linux-gnueabihf g++-9-arm-linux-gnueabihf gcc-9-aarch64-linux-gnu g++-9-aarch64-linux-gnu
           wget https://downloads.openwrt.org/releases/19.07.8/targets/brcm2708/bcm2708/openwrt-sdk-19.07.8-brcm2708-bcm2708_gcc-7.5.0_musl_eabi.Linux-x86_64.tar.xz
-          tar -xvJf openwrt-sdk-19.07.8-brcm2708-bcm2708_gcc-7.5.0_musl_eabi.Linux-x86_64.tar.xz
+          tar -xJf openwrt-sdk-19.07.8-brcm2708-bcm2708_gcc-7.5.0_musl_eabi.Linux-x86_64.tar.xz
           mv openwrt-sdk-19.07.8-brcm2708-bcm2708_gcc-7.5.0_musl_eabi.Linux-x86_64 op19078-brcm2708
           rm openwrt-sdk-19.07.8-brcm2708-bcm2708_gcc-7.5.0_musl_eabi.Linux-x86_64.tar.xz
 
