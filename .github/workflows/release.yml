@@ -10,13 +10,13 @@ env:
 jobs:
   my-job:
     name: Build zbpd on Push Tag 🚀
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
 
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17
+          go-version: 1.16
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -46,9 +46,7 @@ jobs:
           PATH=$PATH:`pwd`/op19078-brcm2708/staging_dir/toolchain-arm_arm1176jzf-s+vfp_gcc-7.5.0_musl_eabi/bin/
           export PATH
           export STAGING_DIR=`pwd`/op19078-brcm2708/staging_dir/toolchain-arm_arm1176jzf-s+vfp_gcc-7.5.0_musl_eabi/
-          export CGO_CFLAGS=$CGO_CFLAGS" --sysroot "$STAGING_DIR
-          export CGO_LDFLAGS=$CGO_LDFLAGS" --sysroot "$STAGING_DIR
-          CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 CC=$STAGING_DIR/bin/arm-openwrt-linux-gcc CXX=$STAGING_DIR/bin/arm-openwrt-linux-g++ AR=$STAGING_DIR/bin/arm-openwrt-linux-ar go build -ldflags="-s -w" -o artifacts/zbpd-openwrt-linux-arm1176jzf-s+vfp
+          CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 CC=arm-openwrt-linux-gcc CXX=arm-openwrt-linux-g++ AR=arm-openwrt-linux-ar go build -ldflags="-s -w" -o artifacts/zbpd-openwrt-linux-arm1176jzf-s+vfp
       - name: Build linux-x64
         run: CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o artifacts/zbpd-linux-x64
       - name: Build linux-x86
