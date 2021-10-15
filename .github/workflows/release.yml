@@ -40,6 +40,8 @@ jobs:
           tar -xJf openwrt-sdk-19.07.8-brcm2708-bcm2708_gcc-7.5.0_musl_eabi.Linux-x86_64.tar.xz
           mv openwrt-sdk-19.07.8-brcm2708-bcm2708_gcc-7.5.0_musl_eabi.Linux-x86_64 op19078-brcm2708
           rm openwrt-sdk-19.07.8-brcm2708-bcm2708_gcc-7.5.0_musl_eabi.Linux-x86_64.tar.xz
+          PATH=$PATH:`pwd`/op19078-brcm2708/staging_dir/toolchain-arm_arm1176jzf-s+vfp_gcc-7.5.0_musl_eabi/bin/
+          export PATH
 
       - name: Build linux-x64
         run: CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o artifacts/zbpd-linux-x64
@@ -50,7 +52,7 @@ jobs:
       - name: Build armv6
         run: CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 CC=arm-linux-gnueabihf-gcc-9 CXX=g++-9-arm-linux-gnueabihf go build -ldflags="-s -w" -o artifacts/zbpd-linux-armv6
       - name: Build for raspi1 (arm1176jzf-s+vfp)
-        run: STAGING_DIR=`pwd`/op19078-brcm2708/staging_dir CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 CC=`pwd`/op19078-brcm2708/staging_dir/toolchain-arm_arm1176jzf-s+vfp_gcc-7.5.0_musl_eabi/bin/arm-openwrt-linux-gcc CXX=`pwd`/op19078-brcm2708/staging_dir/toolchain-arm_arm1176jzf-s+vfp_gcc-7.5.0_musl_eabi/bin/arm-openwrt-linux-g++ go build -ldflags="-s -w" -o artifacts/zbpd-linux-arm1176jzf-s+vfp
+        run: STAGING_DIR=`pwd`/op19078-brcm2708/staging_dir/toolchain-arm_arm1176jzf-s+vfp_gcc-7.5.0_musl_eabi CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 CC=arm-openwrt-linux-gcc CXX=arm-openwrt-linux-g++ go build -ldflags="-s -w" -o artifacts/zbpd-linux-arm1176jzf-s+vfp
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
