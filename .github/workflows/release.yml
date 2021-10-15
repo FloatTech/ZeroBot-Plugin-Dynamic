@@ -45,7 +45,7 @@ jobs:
         run: |
           PATH=$PATH:`pwd`/op19078-brcm2708/staging_dir/toolchain-arm_arm1176jzf-s+vfp_gcc-7.5.0_musl_eabi/bin/
           export PATH
-          STAGING_DIR=`pwd`/op19078-brcm2708/staging_dir/toolchain-arm_arm1176jzf-s+vfp_gcc-7.5.0_musl_eabi/ CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 CC=arm-openwrt-linux-gcc CXX=arm-openwrt-linux-g++ AR=arm-openwrt-linux-ar go build -ldflags="-s -w" -o artifacts/zbpd-openwrt-linux-arm1176jzf-s+vfp
+          CGO_LDFLAGS="-g -O2 -B`pwd`/op19078-brcm2708/staging_dir/toolchain-arm_arm1176jzf-s+vfp_gcc-7.5.0_musl_eabi/bin/arm-openwrt-linux-ld" STAGING_DIR=`pwd`/op19078-brcm2708/staging_dir/toolchain-arm_arm1176jzf-s+vfp_gcc-7.5.0_musl_eabi/ CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 CC=arm-openwrt-linux-gcc CXX=arm-openwrt-linux-g++ AR=arm-openwrt-linux-ar go build -ldflags="-s -w" -o artifacts/zbpd-openwrt-linux-arm1176jzf-s+vfp
       - name: Build linux-x64
         run: CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o artifacts/zbpd-linux-x64
       - name: Build linux-x86
