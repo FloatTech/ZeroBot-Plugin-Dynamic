@@ -116,43 +116,16 @@ func open(path, target string) error {
 	pluginsMu.Unlock()
 	if !ok {
 		p, err := plugin.Open(path)
-		var initfunc, hookfunc, ishooked plugin.Symbol
 		if err == nil {
-			ishooked, err = p.Lookup("IsHooked")
+			var initfunc plugin.Symbol
+			initfunc, err = p.Lookup("Inita")
 			if err == nil {
-				if !*ishooked.(*bool) {
-					hookfunc, err = p.Lookup("Hook")
-					if err == nil {
-						logrus.Debugf("[dyloader]reg: %x, del: %x\n", control.Register, control.Delete)
-						logrus.Debugf("[dyloader]matlist: %p, matlock: %p\n", &matcherList, &matcherLock)
-						hookfunc.(func(interface{}, interface{}, interface{},
-							interface{}, interface{}, interface{},
-							interface{}, interface{},
-							interface{}, interface{}, interface{},
-							interface{},
-							interface{}, interface{}, interface{},
-						))(
-							&zero.BotConfig, &zero.APICallers, zero.New,
-							&matcherList, &matcherLock, defaultEngine,
-							control.Register, control.Delete,
-							sendGroupMessage, sendPrivateMessage, getMessage,
-							parse,
-							message.CustomNode, message.ParseMessage, message.ParseMessageFromArray,
-						)
-					} else {
-						_ = plugin.Close(p)
-						return err
-					}
-				}
-				initfunc, err = p.Lookup("Inita")
-				if err == nil {
-					initfunc.(func())()
-					logrus.Infoln("[dyloader]加载插件", path, "成功")
-					pluginsMu.Lock()
-					plugins[target] = p
-					pluginsMu.Unlock()
-					return nil
-				}
+				initfunc.(func())()
+				logrus.Infoln("[dyloader]加载插件", path, "成功")
+				pluginsMu.Lock()
+				plugins[target] = p
+				pluginsMu.Unlock()
+				return nil
 			}
 			_ = plugin.Close(p)
 		}
