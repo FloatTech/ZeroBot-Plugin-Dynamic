@@ -3,13 +3,16 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math/rand"
 	"os"
-	"strings"
+	"time"
+
+	"github.com/FloatTech/ZeroBot-Plugin/kanban" // 在最前打印 banner
 
 	// 插件控制
 	// webctrl "github.com/FloatTech/zbpctrl/web" // web 后端控制
 
-	"github.com/fumiama/go-registry"
+	"github.com/FloatTech/zbputils/process"
 	"github.com/sirupsen/logrus"
 	zero "github.com/wdvxdr1123/ZeroBot"
 	"github.com/wdvxdr1123/ZeroBot/driver"
@@ -19,19 +22,11 @@ import (
 )
 
 var (
-	contents = []string{
-		"* OneBot + ZeroBot + Golang",
-		"* Version 1.2.3d - 2022-01-07 20:09:30 +0800 CST",
-		"* Copyright © 2020 - 2021 FloatTech. All Rights Reserved.",
-		"* Project: https://github.com/FloatTech/ZeroBot-Plugin",
-	}
 	nicks  = []string{"ATRI", "atri", "亚托莉", "アトリ"}
-	banner = strings.Join(contents, "\n")
 	token  *string
 	url    *string
 	adana  *string
 	prefix *string
-	reg    = registry.NewRegReader("reilia.fumiama.top:32664", "fumiama")
 )
 
 func init() {
@@ -52,7 +47,7 @@ func init() {
 
 	flag.Parse()
 	if *h {
-		printBanner()
+		kanban.PrintBanner()
 		fmt.Println("Usage:")
 		flag.PrintDefaults()
 		os.Exit(0)
@@ -64,45 +59,23 @@ func init() {
 			logrus.SetLevel(logrus.WarnLevel)
 		}
 	}
+
 	// 启用 gui
 	// webctrl.InitGui(*g)
 }
 
-func printBanner() {
-	fmt.Print(
-		"\n======================[ZeroBot-Plugin]======================",
-		"\n", banner, "\n",
-		"----------------------[ZeroBot-公告栏]----------------------",
-		"\n", getKanban(), "\n",
-		"============================================================\n",
-	)
-}
-
-func getKanban() string {
-	err := reg.Connect()
-	if err != nil {
-		return err.Error()
-	}
-	defer reg.Close()
-	text, err := reg.Get("ZeroBot-Plugin/kanban")
-	if err != nil {
-		return err.Error()
-	}
-	return text
-}
-
 func main() {
-	printBanner()
+	rand.Seed(time.Now().UnixNano()) // 全局 seed，其他插件无需再 seed
 	// 帮助
-	zero.OnFullMatchGroup([]string{"/help", ".help", "菜单"}, zero.OnlyToMe).SetBlock(true).FirstPriority().
+	zero.OnFullMatchGroup([]string{"/help", ".help", "菜单"}, zero.OnlyToMe).SetBlock(true).
 		Handle(func(ctx *zero.Ctx) {
-			ctx.SendChain(message.Text(banner, "\n可发送\"/服务列表\"查看 bot 功能"))
+			ctx.SendChain(message.Text(kanban.Banner, "\n可发送\"/服务列表\"查看 bot 功能"))
 		})
-	zero.OnFullMatch("查看zbp公告", zero.OnlyToMe, zero.AdminPermission).SetBlock(true).FirstPriority().
+	zero.OnFullMatch("查看zbp公告", zero.OnlyToMe, zero.AdminPermission).SetBlock(true).
 		Handle(func(ctx *zero.Ctx) {
-			ctx.SendChain(message.Text(getKanban()))
+			ctx.SendChain(message.Text(kanban.Kanban()))
 		})
-	zero.RunAndBlock(
+	zero.Run(
 		zero.Config{
 			NickName:      append([]string{*adana}, nicks...),
 			CommandPrefix: *prefix,
@@ -112,4 +85,6 @@ func main() {
 			Driver:     []zero.Driver{driver.NewWebSocketClient(*url, *token)},
 		},
 	)
+	process.GlobalInitMutex.Unlock()
+	select {}
 }
